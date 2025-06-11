@@ -4,7 +4,7 @@ metadata:
   name: meecha-location
   namespace: meecha
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: meecha-location
