@@ -23,7 +23,7 @@ metadata:
   name: meecha-auth
   namespace: meecha
 spec:
-  replicas: 1
+  replicas: 5
   selector:
     matchLabels:
       app: meecha-auth
