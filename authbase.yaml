@@ -1,0 +1,93 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: authbase-svc
+  namespace: meecha
+spec:
+  type: LoadBalancer
+  selector:
+    app: meecha-auth
+  ports:
+    - name: api-port
+      protocol: TCP
+      port: 80
+      targetPort: 8080
+    - name: grpc-port
+      protocol: TCP
+      port: 9000
+      targetPort: 9000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meecha-auth
+  namespace: meecha
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meecha-auth
+  template:
+    metadata:
+      labels:
+        app: meecha-auth
+    spec:
+      containers:
+        - name: authbase
+          image: mattuu0/authbase-auth
+          ports:
+            - containerPort: 8080
+            - containerPort: 9000
+          env:
+            - name: GoogleClientID
+              valueFrom:
+                secretKeyRef:
+                  name: meechasecret
+                  key: GoogleClientID
+
+            - name: GoogleClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: meechasecret
+                  key: GoogleClientSecret
+
+            - name: GoogleCallback
+              valueFrom:
+                secretKeyRef:
+                  name: meechasecret
+                  key: GoogleCallback
+
+            - name: TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: meechasecret
+                  key: TokenSecret 
+
+            - name: ADMIN_SESSION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: meechasecret
+                  key: AdminSessionKey
+
+            - name: GRPC_ADDR
+              value: ":9000"
+
+            - name: JWT_PRIVATE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: meechasecret
+                  key: JwtPrivKey
+
+            - name: DB_DSN
+              valueFrom:
+                secretKeyRef:
+                  name: meechasecret
+                  key: AuthdbDsn
+
+          volumeMounts:
+            - name: assets-vol
+              mountPath: /assets/icons
+      volumes:
+        - name: assets-vol
+          hostPath:
+            path: /meecha/assets

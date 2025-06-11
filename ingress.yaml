@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: meecha-ingress
+  labels:
+    name: meecha-ingress
+  annotations:  
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  namespace: meecha
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: k8s-meecha.mattuu.com
+    http:
+      paths:
+      - path: /auth(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: authbase-svc
+            port: 
+              number: 80
+      - path: /app(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: meecha-app-svc
+            port: 
+              number: 8090
+      - path: /location(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: meecha-location-svc
+            port: 
+              number: 8090
+      - path: /statics(/|$)(.*)
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: meecha-static-svc
+            port: 
+              number: 80
