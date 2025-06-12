@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: meecha-app
-          image: mattuu0/meecha-app:latest
+          image: ghcr.io/meecha-org/meecha_back/meecha-app:latest
           ports:
             - containerPort: 8090
           env:
