@@ -18,6 +18,13 @@ spec:
           image: ghcr.io/meecha-org/meecha_back/meecha-location:latest
           ports:
             - containerPort: 8090
+          resources:
+            requests:
+              cpu: "100m"    # 例：100ミリコア
+              memory: "128Mi"
+            limits:
+              cpu: "500m"    # 例：500ミリコア
+              memory: "256Mi"
           env:
             - name: REDIS_HOST
               valueFrom:
