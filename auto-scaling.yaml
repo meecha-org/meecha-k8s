@@ -1,0 +1,33 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: meecha-scaling
+  namespace: meecha
+spec:
+  maxReplicas: 10
+  behavior:
+    scaleDown:
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 5
+      stabilizationWindowSeconds: 10
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Pods
+        value: 1
+        periodSeconds: 3
+      selectPolicy: Max
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 50
+        type: Utilization
+    type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: meecha-location
