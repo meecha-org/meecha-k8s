@@ -7,4 +7,3 @@ resources:
   - ./redis.yaml
   - ./static.yaml
   - ./ingress.yaml
-  - ./auto-scaling.yaml
