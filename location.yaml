@@ -74,7 +74,7 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: meecha-scaling
+  name: meecha-location-scaling
   namespace: meecha
 spec:
   maxReplicas: 20
