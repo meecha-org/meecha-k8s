@@ -4,20 +4,20 @@ metadata:
   name: meecha-scaling
   namespace: meecha
 spec:
-  maxReplicas: 10
+  maxReplicas: 20
   behavior:
     scaleDown:
       policies:
       - type: Pods
         value: 1
-        periodSeconds: 5
+        periodSeconds: 1
       stabilizationWindowSeconds: 0
     scaleUp:
       stabilizationWindowSeconds: 0
       policies:
       - type: Pods
         value: 1
-        periodSeconds: 3
+        periodSeconds: 1
       selectPolicy: Max
   metrics:
   - resource:
