@@ -16,8 +16,8 @@ spec:
       stabilizationWindowSeconds: 0
       policies:
       - type: Pods
-        value: 1
-        periodSeconds: 3
+        value: 3
+        periodSeconds: 1
       selectPolicy: Max
   metrics:
   - resource:
