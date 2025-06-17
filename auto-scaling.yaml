@@ -11,7 +11,7 @@ spec:
       - type: Pods
         value: 1
         periodSeconds: 5
-      stabilizationWindowSeconds: 10
+      stabilizationWindowSeconds: 0
     scaleUp:
       stabilizationWindowSeconds: 0
       policies:
