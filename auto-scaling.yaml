@@ -9,7 +9,7 @@ spec:
     scaleDown:
       policies:
       - type: Pods
-        value: 1
+        value: 3
         periodSeconds: 1
       stabilizationWindowSeconds: 0
     scaleUp:
@@ -17,7 +17,7 @@ spec:
       policies:
       - type: Pods
         value: 1
-        periodSeconds: 1
+        periodSeconds: 3
       selectPolicy: Max
   metrics:
   - resource:
