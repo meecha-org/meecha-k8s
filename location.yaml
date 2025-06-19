@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: meecha-location
-          image: ghcr.io/meecha-org/meecha_back/meecha-location:0ac088f6ea5d91126df26038bec6e765451dae25
+          image: ghcr.io/meecha-org/meecha_back/meecha-location:latest
           ports:
             - containerPort: 8090
           resources:
