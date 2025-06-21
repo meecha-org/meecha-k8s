@@ -97,8 +97,8 @@ spec:
               mountPath: /assets/icons
       volumes:
         - name: assets-vol
-          hostPath:
-            path: /meecha/assets
+          persistentVolumeClaim:
+            claimName: meecha-claim
 
 ---
 apiVersion: autoscaling/v2
