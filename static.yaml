@@ -4,7 +4,7 @@ metadata:
   name: meecha-static
   namespace: meecha
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: meecha-static
