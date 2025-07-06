@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
         - name: authbase
-          image: mattuu0/authbase-auth
+          image: mattuu0/authbase-auth:0.2.2
           ports:
             - containerPort: 8080
             - containerPort: 9000
