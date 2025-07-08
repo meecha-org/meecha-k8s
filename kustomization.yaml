@@ -8,3 +8,5 @@ resources:
   - ./redis.yaml
   - ./static.yaml
   - ./ingress.yaml
+namespaces:
+  - ./namespace.yaml
