@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: k8s-meecha.mattuu.com
+  - host: k8s-test-meecha.mattuu.com
     http:
       paths:
       - path: /auth(/|$)(.*)
