@@ -17,6 +17,15 @@ spec:
           image: ghcr.io/meecha-org/meecha_back/meecha-app:latest
           ports:
             - containerPort: 8090
+
+          # POD がリクエストを受けれるかの検証
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8090
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            
           resources:
             requests:
               cpu: "100m"    # 例：100ミリコア

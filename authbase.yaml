@@ -37,6 +37,15 @@ spec:
           ports:
             - containerPort: 8080
             - containerPort: 9000
+            
+          # POD がリクエストを受けれるかの検証
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 3
+            periodSeconds: 3
+
           resources:
             requests:
               cpu: "100m"    # 例：100ミリコア
