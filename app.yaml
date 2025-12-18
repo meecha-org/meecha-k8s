@@ -63,6 +63,8 @@ spec:
                 secretKeyRef:
                   name: meechasecret
                   key: RedisHost
+            - name: REDIS_TYPE
+              value: "sentinel"
 
 ---
 apiVersion: v1
