@@ -65,7 +65,8 @@ spec:
                   key: JwtPublicKey
             - name: REDIS_TYPE
               value: "sentinel"
-  
+            - name: REDIS_MASTER_NAME
+              value: "myMaster"
 ---
 apiVersion: v1
 kind: Service
