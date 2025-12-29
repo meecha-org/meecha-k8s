@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: meecha-app
-          image: ghcr.io/meecha-org/meecha_back/meecha-app:latest
+          image: ghcr.io/meecha-org/meecha_back/meecha-app-experiment:latest
           ports:
             - containerPort: 8090
 
@@ -25,7 +25,6 @@ spec:
               port: 8090
             initialDelaySeconds: 3
             periodSeconds: 3
-            
           resources:
             requests:
               cpu: "100m"    # 例：100ミリコア
@@ -64,7 +63,7 @@ spec:
                   name: meechasecret
                   key: RedisHost
             - name: REDIS_TYPE
-              value: "sentinel"
+              value: "redis"
             - name: REDIS_MASTER_NAME
               value: "myMaster"
 ---

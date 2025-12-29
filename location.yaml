@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: meecha-location
-          image: ghcr.io/meecha-org/meecha_back/meecha-location:latest
+          image: ghcr.io/meecha-org/meecha_back/meecha-location-experiment:latest
           ports:
             - containerPort: 8090
           
@@ -64,7 +64,7 @@ spec:
                   name: meechasecret
                   key: JwtPublicKey
             - name: REDIS_TYPE
-              value: "sentinel"
+              value: "redis"
             - name: REDIS_MASTER_NAME
               value: "myMaster"
 ---
