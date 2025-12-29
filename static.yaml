@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: meecha-static
-          image: ghcr.io/meecha-org/meecha_back/meecha-static-experiment:latest
+          image: ghcr.io/meecha-org/meecha_back/meecha-static:latest
           ports:
             - containerPort: 80
   
