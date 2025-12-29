@@ -64,7 +64,7 @@ spec:
                   name: meechasecret
                   key: JwtPublicKey
             - name: REDIS_TYPE
-              value: "sentinel"
+              value: "redis"
             - name: REDIS_MASTER_NAME
               value: "myMaster"
 ---
