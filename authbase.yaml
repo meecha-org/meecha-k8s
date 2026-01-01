@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
         - name: authbase
-          image: mattuu0/authbase-auth:0.2.4
+          image: mattuu0/authbase-auth:0.2.5
           ports:
             - containerPort: 8080
             - containerPort: 9000
@@ -86,6 +86,9 @@ spec:
 
             - name: GRPC_ADDR
               value: ":9000"
+
+            - name: CUSTOM_SCHEME
+              value: "meecha"
 
             - name: JWT_PRIVATE_KEY
               valueFrom:
