@@ -12,11 +12,51 @@ spec:
       labels:
         app: meecha-static
     spec:
+      # 障害ノードからの迅速な切り離し設定
+      tolerations:
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 10
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 10
+      # Pod間の分散配置（可用性向上）
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: meecha-static
       containers:
         - name: meecha-static
           image: ghcr.io/meecha-org/meecha_back/meecha-static:latest
           ports:
             - containerPort: 80
+          # 静的ファイルサーバー用のヘルスチェック
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 3
+            failureThreshold: 2
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
   
 ---
 apiVersion: v1

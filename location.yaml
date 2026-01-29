@@ -12,6 +12,24 @@ spec:
       labels:
         app: meecha-location
     spec:
+      # 障害ノードからの迅速な切り離し設定
+      tolerations:
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 10
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 10
+      # Pod間の分散配置（可用性向上）
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: meecha-location
       containers:
         - name: meecha-location
           image: ghcr.io/meecha-org/meecha_back/meecha-location:latest
@@ -25,13 +43,22 @@ spec:
               port: 8090
             initialDelaySeconds: 3
             periodSeconds: 3
+            failureThreshold: 2
+          # Pod の生存確認（失敗時に再起動）
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8090
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
 
           resources:
             requests:
-              cpu: "100m"    # 例：100ミリコア
+              cpu: "100m"
               memory: "128Mi"
             limits:
-              cpu: "500m"    # 例：500ミリコア
+              cpu: "500m"
               memory: "256Mi"
           env:
             - name: REDIS_HOST

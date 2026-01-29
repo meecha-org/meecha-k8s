@@ -31,6 +31,24 @@ spec:
       labels:
         app: meecha-auth
     spec:
+      # 障害ノードからの迅速な切り離し設定
+      tolerations:
+        - key: node.kubernetes.io/not-ready
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 10
+        - key: node.kubernetes.io/unreachable
+          operator: Exists
+          effect: NoExecute
+          tolerationSeconds: 10
+      # Pod間の分散配置（可用性向上）
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: meecha-auth
       containers:
         - name: authbase
           image: mattuu0/authbase-auth:0.2.7
@@ -45,13 +63,22 @@ spec:
               port: 8080
             initialDelaySeconds: 3
             periodSeconds: 3
+            failureThreshold: 2
+          # Pod の生存確認（失敗時に再起動）
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
 
           resources:
             requests:
-              cpu: "100m"    # 例：100ミリコア
+              cpu: "100m"
               memory: "128Mi"
             limits:
-              cpu: "500m"    # 例：500ミリコア
+              cpu: "500m"
               memory: "256Mi"
           env:
             - name: GoogleClientID
@@ -121,45 +148,36 @@ spec:
           persistentVolumeClaim:
             claimName: meecha-claim
 
-# ---
-# apiVersion: autoscaling/v2
-# kind: HorizontalPodAutoscaler
-# metadata:
-#   name: meecha-scaling
-# spec:
-#   maxReplicas: 20
-#   behavior:
-#     scaleDown:
-#       policies:
-#       - type: Pods
-#         value: 3
-#         periodSeconds: 1
-#       stabilizationWindowSeconds: 0
-#     scaleUp:
-#       stabilizationWindowSeconds: 0
-#       policies:
-#       - type: Pods
-#         value: 3
-#         periodSeconds: 1
-#       selectPolicy: Max
-#   metrics:
-#   - resource:
-#       name: cpu
-#       target:
-#         averageUtilization: 50
-#         type: Utilization
-#     type: Resource
-#   minReplicas: 3
-#   scaleTargetRef:
-#     apiVersion: apps/v1
-#     kind: Deployment
-#     name: meecha-auth
-#   tolerations:
-#     - effect: NoExecute
-#       key: node.kubernetes.io/not-ready
-#       operator: Exists
-#       tolerationSeconds: 10
-#     - effect: NoExecute
-#       key: node.kubernetes.io/unreachable
-#       operator: Exists
-#       tolerationSeconds: 10
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: meecha-scaling-auth
+spec:
+  maxReplicas: 20
+  behavior:
+    scaleDown:
+      policies:
+      - type: Pods
+        value: 3
+        periodSeconds: 1
+      stabilizationWindowSeconds: 0
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+      - type: Pods
+        value: 3
+        periodSeconds: 1
+      selectPolicy: Max
+  metrics:
+  - resource:
+      name: cpu
+      target:
+        averageUtilization: 50
+        type: Utilization
+    type: Resource
+  minReplicas: 3
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: meecha-auth
