@@ -1,0 +1,11 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: meecha-stripprefix
+spec:
+  stripPrefix:
+    prefixes:
+      - "/app"
+      - "/statics"
+      - "/auth"
+      - "/location"

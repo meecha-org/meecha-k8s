@@ -8,4 +8,5 @@ resources:
   - ./location.yaml
   - ./redis.yaml
   - ./static.yaml
-  - ./ingress.yaml
+  - ./strip-middleware.yaml
+  - ./ingressroute.yaml
